@@ -1,0 +1,119 @@
+1. What is a primary benefit of using bicycles in cities?
+A. Reduce traffic congestion
+B. Increase fuel consumption
+C. Raise air pollution
+D. Require expensive maintenance
+Answer: A
+Explanation: Bicycles reduce traffic by occupying less road space and produce zero emissions.
+
+2. What is a feature of electric buses?
+A. Produce loud noise
+B. Emit zero tailpipe emissions
+C. Require gasoline
+D. Have lower operating costs
+Answer: B,D
+Explanation: Electric buses eliminate tailpipe emissions and have lower operating costs due to reduced fuel and maintenance needs.
+
+3. What fuels are considered renewable?
+A. Solar
+B. Diesel
+C. Wind
+D. Petrol
+Answer: A,C
+Explanation: Solar and wind are renewable; diesel and petrol are fossil fuels.
+
+4. Which of the following is a smart mobility solution?
+A. Manual ticketing
+B. AI-based traffic lights
+C. Paper maps
+D. GPS navigation systems
+Answer: B,D
+Explanation: AI traffic lights optimize flow; GPS reduces congestion via real-time routing.
+
+5. Which transport method produces the most emissions?
+A. Electric car
+B. Diesel truck
+C. Train
+D. Bicycle
+Answer: B
+Explanation: Diesel trucks emit high levels of CO2 and pollutants.
+
+6. What is a key feature of smart city transportation?
+A. Encourages car ownership
+B. Integrates multiple transport modes
+C. Uses paper-based schedules
+D. Operates independently of data
+Answer: B
+Explanation: Smart cities integrate buses, trains, bikes, and rideshares for seamless travel.
+
+7. Why are bike lanes important in smart cities?
+A. Discourage cycling
+B. Improve cyclist safety
+C. Cause traffic jams
+D. Promote non-motorized transport
+Answer: B,D
+Explanation: Bike lanes enhance safety and promote eco-friendly transport.
+
+8. What is a disadvantage of fossil-fuel vehicles?
+A. Low emissions
+B. Renewable energy use
+C. Air pollution
+D. Greenhouse gas emissions
+Answer: C,D
+Explanation: Fossil fuels emit pollutants and contribute to climate change.
+
+9. What encourages citizens to use public transport?
+A. Affordable fares
+B. Long wait times
+C. Reliable schedules
+D. Poor service coverage
+Answer: A,C
+Explanation: Affordable fares and reliable schedules increase public transport usage.
+
+10. What is an example of a shared mobility service?
+A. Private car
+B. Bike-sharing system
+C. Carpooling
+D. Subway
+Answer: B,C
+Explanation: Bike-sharing and carpooling reduce private vehicle use.
+
+11. What role does AI play in smart transport?
+A. Increases manual work
+B. Optimizes traffic flow
+C. Tracks vehicles in real-time
+D. Removes internet need
+Answer: B,C
+Explanation: AI analyzes traffic data to optimize flow and enables real-time vehicle tracking.
+
+12. What helps reduce carbon footprint in cities?
+A. Walking
+B. Electric scooters
+C. Diesel buses
+D. Biking
+Answer: A,B,D
+Explanation: Walking, electric scooters, and biking produce low or zero emissions.
+
+13. What transport system is most eco-friendly?
+A. Metro rail
+B. Gasoline car
+C. Electric tram
+D. Motorcycle
+Answer: A,C
+Explanation: Metro and trams run on electricity, producing zero tailpipe emissions.
+
+14. What challenges do smart cities face in transport?
+A. Infrastructure cost
+B. High pollution levels
+C. Lack of public awareness
+D. Efficient planning
+Answer: A,C
+Explanation: High infrastructure costs and public awareness gaps hinder implementation.
+
+15. What can governments do to support green mobility?
+A. Subsidize diesel fuel
+B. Build charging stations
+C. Expand cycling lanes
+D. Remove public transport
+Answer: B,C
+Explanation: Charging stations and bike lanes promote electric vehicles and cycling.
