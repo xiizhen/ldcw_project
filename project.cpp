@@ -4,24 +4,31 @@
 #include <set>
 #include <sstream>
 #include <algorithm>
-#include <cctype>     // for toupper
-#include <windows.h>  // for system("cls") on Windows
+#include <cctype>
+#include <windows.h>
 
 using namespace std;
 
-// ÆÁÄ»Çå³ıº¯Êı
+// å¨“å‘­ç†é‘èŠ¥æšŸ
 void clearScreen() {
-    system("cls");  // Windows ÏµÍ³
+    system("cls");
 }
 
-// ÎÊÌâÊı¾İ½á¹¹
+// çå‘¬è…‘é„å‰§ãšé‚å›§ç“§
+void centerText(const string& text, int width = 80) {
+    int padding = (width - text.length()) / 2;
+    if (padding > 0) cout << string(padding, ' ');
+    cout << text << endl;
+}
+
+// æ£°æ¨¼æ´°ç¼æ’´ç€¯
 struct Question {
     string questionText;
     set<char> correctAnswers;
     string explanation;
 };
 
-// ½âÎö´ğ°¸ĞĞ
+// ç‘™ï½†ç€½ç»›æ—€î”
 set<char> parseAnswers(const string& answerLine) {
     set<char> correctAnswers;
     size_t pos = answerLine.find("Answer:");
@@ -30,8 +37,7 @@ set<char> parseAnswers(const string& answerLine) {
         stringstream ss(answerPart);
         string token;
         while (getline(ss, token, ',')) {
-            for (size_t i = 0; i < token.size(); ++i) {
-                char c = token[i];
+            for (char c : token) {
                 if (isalpha(c)) {
                     correctAnswers.insert(toupper(c));
                 }
@@ -41,7 +47,7 @@ set<char> parseAnswers(const string& answerLine) {
     return correctAnswers;
 }
 
-// ½âÎö½âÊÍĞĞ
+// ç‘™ï½†ç€½ç‘™ï½‰å™´
 string parseExplanation(const string& line) {
     size_t pos = line.find("Explanation:");
     if (pos != string::npos) {
@@ -50,41 +56,72 @@ string parseExplanation(const string& line) {
     return "";
 }
 
-// »ñÈ¡ÓÃ»§´ğ°¸
-set<char> getUserAnswers() {
-    string input;
-    cout << "Your answer (A/B/C/D or multiple like A,C): ";
-    cin >> input;
-    cin.ignore(); // Çå³ıÊäÈë»º³åÇø
-
-    set<char> userAnswers;
-    for (size_t i = 0; i < input.size(); ++i) {
-        char c = input[i];
+// å¦«â‚¬éŒãƒ¦æ§¸éšï¸½æ¹éå ¢ç“Ÿå¦—å ¬ç´™é™î„å‘ç’?A-Dé”›?
+bool isValidAnswer(const string& input) {
+    for (char c : input) {
         if (isalpha(c)) {
-            userAnswers.insert(toupper(c));
+            char upper = toupper(c);
+            if (upper < 'A' || upper > 'D') {
+                return false;
+            }
         }
     }
+    return true;
+}
+
+// é‘¾å³°å½‡é¢ã„¦åŸ›æˆæ’³å†ç»›æ—€î”
+set<char> getUserAnswers() {
+    string input;
+    set<char> userAnswers;
+
+    while (true) {
+        cout << "\nYour answer (A/B/C/D or multiple like A,C): ";
+        getline(cin, input);
+        userAnswers.clear();
+
+        if (!isValidAnswer(input)) {
+            cout << "Invalid input. Please enter only A, B, C, or D.\n";
+            continue;
+        }
+
+        for (char c : input) {
+            if (isalpha(c)) {
+                userAnswers.insert(toupper(c));
+            }
+        }
+
+        if (!userAnswers.empty()) break;
+        cout << "Please enter at least one valid option.\n";
+    }
+
     return userAnswers;
 }
 
-// »ñÈ¡ÓÃ»§·´À¡
-string getUserFeedback() {
+// é¢ã„¦åŸ›é™å¶‰î›­
+string getUserFeedback(const string& userName) 
+{
+	
     string feedback;
-    cout << "\nPlease share your feedback about this quiz:\n";
+    
+    clearScreen();
+    centerText("========================================");
+    centerText("                FEEBACK                 ");
+    centerText("========================================\n");
+    cout << "\n" << userName << ", please share your feedback about this quiz:\n";
     getline(cin, feedback);
     return feedback;
 }
 
-// »ñÈ¡ÆÀ·ÖÆÀÓï
+// ç’‡å‹«åé‚å›§ç“§
 string getReview(int score) {
     if (score <= 3) return "Needs Improvement";
     else if (score <= 7) return "Good Job!";
-    else return "Excellent! You¡¯re a Smart City Transport Champion!";
+    else return "Excellent! You are a Smart City Transport Champion!";
 }
 
-// ±£´æÓÃ»§Êı¾İ
+// æ·‡æ¿†ç“¨é´æ„®å“—
 void saveUserData(const string& name, int score, const string& review, const string& feedback) {
-    ofstream file("user.txt", ios::app); // ×·¼ÓÄ£Ê½
+    ofstream file("user.txt", ios::app);
     if (file.is_open()) {
         file << "Name: " << name << "\n";
         file << "Score: " << score << "/15\n";
@@ -92,142 +129,133 @@ void saveUserData(const string& name, int score, const string& review, const str
         file << "Feedback: " << feedback << "\n";
         file << "------------------------\n";
         file.close();
-        cout << "Your data has been saved successfully.\n";
+        cout << "\nYour data has been saved successfully.\n";
     } else {
-        cerr << "Unable to save user data.\n";
+        cerr << "Error: Unable to save user data.\n";
     }
 }
 
-// ²âÑéÏµÍ³Àà
-class EcoTransportQuizSystem {
-public:
-    // ¹¹Ôìº¯Êı - ÏÔÊ¾¼ÓÔØ¶¯»­
-    EcoTransportQuizSystem() {
-        system("COLOR 0e");
-        system("cls");
+// å¨†ãˆ£ç¹‹é”ã„§æ•¾
+void showIntro() {
+    system("COLOR 0E");
+    clearScreen();
+    SetConsoleCP(437);
+    SetConsoleOutputCP(437);
 
-        SetConsoleCP(437);
-        SetConsoleOutputCP(437);
+    int bar1 = 219;
+    centerText("Welcome to Eco-Friendly Transportation Quiz");
+    centerText("Loading, please wait...\n");
 
-        int bar1 = 219;
+    cout << "\t\t\t";
 
-        cout << "\n\n\n\t\t\t\tWelcome to Eco-Friendly Transportation Quiz :)";
-        cout << "\n\n\n\t\t\t\t";
-
-        cout << "\r\t\t\t\t";
-
-        for (int i = 0; i <= 100; i += 4) {
-            cout << " " << i << "%";
-            cout << flush;
-            Sleep(15);
-            cout << "\r\t\t\t\t";
-            for (int j = 0; j < i / 4; j++) {
-                cout << (char)bar1;
-            }
+    for (int i = 0; i <= 100; i += 4) {
+        cout << " " << i << "%";
+        cout << flush;
+        Sleep(10);
+        cout << "\r\t\t\t";
+        for (int j = 0; j < i / 4; j++) {
+            cout << (char)bar1;
         }
-        cout << "\n\t\t\t\t" << (char)1 << "!";
-        cout << endl;
-        system("pause");
-        system("cls");
+        Sleep(10);
     }
 
-    // Îö¹¹º¯Êı
-    ~EcoTransportQuizSystem() {
-        cout << "Thank you for using our Eco-Friendly Transportation Quiz. Goodbye!\n";
-    }
-};
+    cout << "\n";
+    system("pause");
+    clearScreen();
+}
 
+// æ¶“è¯²åš±é?
 int main() {
-    // ³õÊ¼»¯²âÑéÏµÍ³
-    EcoTransportQuizSystem quizSystem;
+    showIntro();
+    clearScreen();
 
-    // ´ò¿ªÎÊÌâÎÄ¼ş
     ifstream file("question.txt");
-    if (!file) {
-        cout << "Error: Could not open question.txt file." << endl;
+    if (!file.is_open()) {
+        cout << "Error: Could not open question.txt file.\n";
         return 1;
     }
 
     string userName;
+    centerText("===== Green City, Smart Living Quiz =====");
+    centerText("Topic: Eco-Friendly Transportation in Smart Cities\n");
+    cout << "\nEnter your name: ";
+    getline(cin, userName);
+
+    clearScreen();
+    centerText("Hi " + userName + "! You will be asked 15 multiple-choice questions.");
+    centerText("Each correct answer gives you 1 point.\n");
+    system("pause");
+    clearScreen();
+
+    string line;
     int correctCount = 0;
     int totalQuestions = 0;
 
-    // »ñÈ¡ÓÃ»§ĞÕÃû
-    clearScreen();
-    cout << "===== Welcome to the Green City, Smart Living Quiz! =====" << endl;
-    cout << "Topic: Eco-Friendly Transportation in Smart Cities" << endl;
-    cout << "Please enter your name: ";
-    getline(cin, userName);
-
-    // ÏÔÊ¾²âÑéËµÃ÷
-    clearScreen();
-    cout << "\nHi " << userName << "! You will be asked 15 multiple-choice questions." << endl;
-    cout << "Each correct answer gives you 1 point. Select all correct options for multiple-answer questions.\n\nLet's begin!\n\n";
-
-    // ¶ÁÈ¡ÎÊÌâÎÄ¼ş
-    string line;
     while (getline(file, line)) {
-        Question currentQuestion;
-        currentQuestion.questionText = "";
+        Question q;
+        q.questionText = "";
 
-        // ¶ÁÈ¡ÎÊÌâÎÄ±¾
         while (line.find("Answer:") == string::npos && !file.eof()) {
-            currentQuestion.questionText += line + "\n";
+            q.questionText += line + "\n";
             getline(file, line);
         }
 
-        // ½âÎöÕıÈ·´ğ°¸
-        currentQuestion.correctAnswers = parseAnswers(line);
+        q.correctAnswers = parseAnswers(line);
 
-        // ¶ÁÈ¡½âÊÍ
         if (getline(file, line)) {
-            currentQuestion.explanation = parseExplanation(line);
+            q.explanation = parseExplanation(line);
         }
 
-        // ÏÔÊ¾ÎÊÌâ
+        clearScreen();
+
         totalQuestions++;
-        cout << "===== Question " << totalQuestions << " =====" << endl;
-        cout << currentQuestion.questionText << endl;
+        centerText("===== Question " + to_string(totalQuestions) + " =====");
+        cout << q.questionText << endl;
 
-        // »ñÈ¡ÓÃ»§´ğ°¸
         set<char> userAnswers = getUserAnswers();
+        cout << "\n";
 
-        // ¼ì²é´ğ°¸
-        if (userAnswers == currentQuestion.correctAnswers) {
-            cout << "Correct!\n\n";
+        if (userAnswers == q.correctAnswers) {
+            centerText("Correct!\n");
             correctCount++;
         } else {
-            cout << "Wrong! The correct answer was: ";
-            set<char>::iterator it;
-            for (it = currentQuestion.correctAnswers.begin(); it != currentQuestion.correctAnswers.end(); ++it) {
-                cout << *it << " ";
+            string correctAnsText = "Wrong! Correct answer: ";
+            for (char ans : q.correctAnswers) {
+                correctAnsText += ans;
+                correctAnsText += ' ';
             }
-            cout << "\n\n";
+            centerText(correctAnsText);
+            cout << "\n";
 
-            // ÏÔÊ¾½âÊÍ
-            if (!currentQuestion.explanation.empty()) {
-                cout << "Explanation:\n" << currentQuestion.explanation << "\n\n";
+            if (!q.explanation.empty()) {
+                cout << "\nExplanation:\n" << q.explanation << "\n";
             }
         }
+
+        system("pause");
     }
 
     file.close();
+    clearScreen();
 
-    // ¼ÆËãÆÀ·ÖºÍÆÀÓï
     string review = getReview(correctCount);
-
-    // »ñÈ¡ÓÃ»§·´À¡
-    string feedback = getUserFeedback();
-
-    // ±£´æÓÃ»§Êı¾İ
+    string feedback = getUserFeedback(userName);
     saveUserData(userName, correctCount, review, feedback);
 
-    // ÏÔÊ¾½á¹û
     clearScreen();
-    cout << "===== Quiz Complete! =====" << endl;
-    cout << userName << ", you scored " << correctCount << " out of " << totalQuestions << "." << endl;
-    cout << "Review: " << review << endl;
+    centerText("========================================");
+    centerText("             QUIZ COMPLETED             ");
+    centerText("========================================\n");
 
-    system("pause"); // ±£³Ö´°¿Ú´ò¿ª
+    centerText("Thank you, " + userName + "!");
+    centerText("You scored " + to_string(correctCount) + " out of " + to_string(totalQuestions) + ".");
+    centerText("Performance Review: " + review + "\n");
+
+    centerText("Your feedback has been recorded.");
+    centerText("We hope you enjoyed the quiz!\n");
+
+    centerText("========================================");
+
+    system("pause");
     return 0;
 }
