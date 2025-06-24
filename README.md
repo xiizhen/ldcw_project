@@ -1,1 +1,1 @@
-# ldcw_project
+This C++ program creates an interactive eco-friendly transportation quiz with 15 multiple-choice questions, aligning with theme of sustainable urban mobility. It provides immediate feedback, calculates a score, and offers motivational messages based on performance. Users can replay the quiz as desired. 
